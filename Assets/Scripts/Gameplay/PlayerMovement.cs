@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float velocity;
-    private Camera _mainCamera;
+    
+    [Inject] private GameManager _gameManager;
+    [Inject] private Camera _mainCamera;
 
     protected void Awake()
     {
-        _mainCamera = Camera.main;
         Cursor.visible = false;
     }
-
     protected void Update()
+    {
+        if (_gameManager.State == GameManager.GameState.InGame)
+            UpdateMovement();
+    }
+
+    private void UpdateMovement()
     {
         var mousePosition = Input.mousePosition;
         mousePosition = _mainCamera.ScreenToWorldPoint(mousePosition);
