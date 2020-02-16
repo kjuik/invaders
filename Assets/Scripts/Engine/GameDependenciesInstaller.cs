@@ -10,5 +10,7 @@ public class GameDependenciesInstaller : MonoInstaller
     {
         Container.Bind<GameManager>().FromInstance(gameManager).AsSingle();
         Container.Bind<Camera>().FromInstance(mainCamera).AsSingle();
+        
+        Container.Bind<ObjectPool>().FromNewComponentOnNewGameObject().AsSingle();
     }
 }
