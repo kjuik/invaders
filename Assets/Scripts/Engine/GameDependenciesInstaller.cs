@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class ZenjectInstaller : MonoInstaller
+public class GameDependenciesInstaller : MonoInstaller
 {
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Camera mainCamera;
