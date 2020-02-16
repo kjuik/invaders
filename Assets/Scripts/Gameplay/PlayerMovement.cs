@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     protected void Awake()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
     }
     protected void Update()
     {
