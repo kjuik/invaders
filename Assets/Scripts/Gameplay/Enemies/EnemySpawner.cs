@@ -62,7 +62,7 @@ public class EnemySpawner : MonoBehaviour
         {
             for (var j = 0; j < config.height; j++)
             {
-                var enemyPosition = GetEnemyPosition(i, j, config.width, config.height);
+                var enemyPosition = GenerateEnemyPosition(i, j, config.width - 1, config.height - 1);
                 spawnedEnemies.Add(SpawnNewEnemy(config.enemyTypes, enemyPosition));
             }        
         }
@@ -73,6 +73,7 @@ public class EnemySpawner : MonoBehaviour
         }
         
         _currentWave = new GameObject("Wave").AddComponent<Wave>();
+        _currentWave.transform.position = transform.position;
         _currentWave.Init(spawnedEnemies);
         
         var waveMovement = _currentWave.gameObject.AddComponent<WaveMovement>();
@@ -81,9 +82,9 @@ public class EnemySpawner : MonoBehaviour
         _nextWaveIndex++;
     }
 
-    private Vector3 GetEnemyPosition(int horizIndex, int vertIndex, int horizCount, int vertCount) =>
-        new Vector3(
-            enemySpacing * (horizCount  * 0.5f - horizIndex),
+    private Vector3 GenerateEnemyPosition(int horizIndex, int vertIndex, int horizCount, int vertCount) =>
+        transform.position + new Vector3(
+            enemySpacing * (horizCount * 0.5f - horizIndex),
             enemySpacing * (vertCount * 0.5f - vertIndex),
             0f);
 
