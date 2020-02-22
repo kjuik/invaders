@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float velocity;
     
-    [Inject] private GameManager _gameManager;
+    [Inject] private GameStateMachine _gameStateMachine;
     [Inject] private Camera _mainCamera;
 
     protected void Awake()
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     }
     protected void Update()
     {
-        if (_gameManager.State == GameManager.GameState.InGame)
+        if (_gameStateMachine.CurrentState == GameState.InGame)
             UpdateMovement();
     }
 

@@ -7,13 +7,13 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private float rechargeTime;
     [SerializeField] private float projectileLifetime;
     
-    [Inject] private GameManager _gameManager;
+    [Inject] private GameStateMachine _gameStateMachine;
     [Inject] private ObjectPool _pool;
 
     private float _rechargeTimer;
     protected void Update()
     {
-        if (_gameManager.State == GameManager.GameState.InGame)
+        if (_gameStateMachine.CurrentState == GameState.InGame)
             UpdateShooting();
     }
 
