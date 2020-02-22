@@ -2,4 +2,4 @@ Game by Michal Krolikowski
 
 Space background by https://opengameart.org/users/calinou
 Mum face by https://opengameart.org/users/natashahaggard
-Spaceships created with https://ianburnette.itch.io/random-sprite-generator by Ian Burnette
+Spaceships and projectiles created with https://ianburnette.itch.io/random-sprite-generator by Ian Burnette
