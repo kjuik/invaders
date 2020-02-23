@@ -1,8 +1,17 @@
 ﻿ using System;
  using UnityEngine;
+ using Zenject;
 
  public class Enemy : MonoBehaviour
  {
+     [Inject] private ObjectPool _pool;
+
      public event Action<Enemy> OnDied;
-     public void Kill() => OnDied?.Invoke(this);
+     private void OnCollisionEnter(Collision _) => Die();
+     
+     private void Die()
+     {
+         _pool.Return(this);
+         OnDied?.Invoke(this);
+     }
  }
