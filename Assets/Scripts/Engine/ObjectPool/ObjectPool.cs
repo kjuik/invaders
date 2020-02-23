@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Zenject;
 
 public class ObjectPool : MonoBehaviour
 {
     private readonly Dictionary<int, Queue<PooledObject>> _poolsByPrefabId = new Dictionary<int, Queue<PooledObject>>();
     [SerializeField] private int poolChunkSize = 5;
 
+    [Inject] private IFactory<Object, PooledObject> _pooledPrefabFactory;
+    
     public GameObject Rent(GameObject prefab, float maxLifetime) 
         => Rent(prefab.transform, maxLifetime).gameObject;
     
@@ -44,13 +47,10 @@ public class ObjectPool : MonoBehaviour
     {
         for (var i = 0; i < poolChunkSize; ++i)
         {
-            var instance = Instantiate(prefab);
+            var instance = _pooledPrefabFactory.Create(prefab);
             instance.name = prefab.name + "(Pooled)";
-
-            var pooledObj = instance.gameObject.AddComponent<PooledObject>();
-            pooledObj.Init(id, this);
-
-            _poolsByPrefabId[id].Enqueue(pooledObj);
+            instance.Init(id, this);
+            _poolsByPrefabId[id].Enqueue(instance);
         }
     }
 }

@@ -12,5 +12,6 @@ public class GameDependenciesInstaller : MonoInstaller
         Container.Bind<Camera>().FromInstance(mainCamera).AsSingle();
         
         Container.Bind<ObjectPool>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.BindIFactory<Object, PooledObject>().FromFactory<PooledPrefabFactory>();
     }
 }
