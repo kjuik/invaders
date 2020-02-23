@@ -15,7 +15,6 @@ public class EnemySpawner : MonoBehaviour
         {
             public Enemy enemy;
             public float probability;
-            public bool pooled;
         }
 
         public int width;
@@ -23,12 +22,15 @@ public class EnemySpawner : MonoBehaviour
         
         public float horizontalSpeed;
         public float verticalSpeed;
-        
+        public float maxLifetime;
+
         public List<EnemyConfig> enemyTypes;
     }
 
     [Inject] private GameStateMachine _gameStateMachine;
     [Inject] private ObjectPool _pool;
+    [Inject] private EnemiesMovement _enemiesMovement;
+    [Inject] private Wave NewWave { get; set; }
     
     [SerializeField] private float enemySpacing;
     [SerializeField] private List<EnemyWaveConfig> waveConfigs;
@@ -63,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
             for (var j = 0; j < config.height; j++)
             {
                 var enemyPosition = GenerateEnemyPosition(i, j, config.width - 1, config.height - 1);
-                spawnedEnemies.Add(SpawnNewEnemy(config.enemyTypes, enemyPosition));
+                spawnedEnemies.Add(SpawnNewEnemy(config.enemyTypes, enemyPosition, config.maxLifetime));
             }        
         }
 
@@ -72,12 +74,14 @@ public class EnemySpawner : MonoBehaviour
             Destroy(_currentWave.gameObject);
         }
         
-        _currentWave = new GameObject("Wave").AddComponent<Wave>();
-        _currentWave.transform.position = transform.position;
-        _currentWave.Init(spawnedEnemies);
+        _currentWave = NewWave;
+        var waveTransform = _currentWave.transform;
+        waveTransform.SetParent(_enemiesMovement.transform);
+        waveTransform.localPosition = Vector3.zero;
         
-        var waveMovement = _currentWave.gameObject.AddComponent<WaveMovement>();
-        waveMovement.Init(_gameStateMachine, config.horizontalSpeed, config.verticalSpeed);
+        _currentWave.Init(spawnedEnemies);
+
+        _enemiesMovement.OnNewWave(config.horizontalSpeed, config.verticalSpeed);
         
         _nextWaveIndex++;
     }
@@ -88,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
             enemySpacing * (vertCount * 0.5f - vertIndex),
             0f);
 
-    private Enemy SpawnNewEnemy(IReadOnlyCollection<EnemyWaveConfig.EnemyConfig> enemyConfigs, Vector3 position)
+    private Enemy SpawnNewEnemy(List<EnemyWaveConfig.EnemyConfig> enemyConfigs, Vector3 position, float maxLifetime)
     {
         var sumOfProbabilities = enemyConfigs.Sum(p => p.probability);
         var random = Random.Range(0f, sumOfProbabilities);
@@ -98,9 +102,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (counter + ec.probability >= random)
             {
-                var enemy = ec.pooled 
-                    ? _pool.Rent(ec.enemy, 300f) 
-                    : Instantiate(ec.enemy);
+                var enemy = _pool.Rent(ec.enemy, maxLifetime);
                 
                 enemy.transform.position = position;
                 return enemy;

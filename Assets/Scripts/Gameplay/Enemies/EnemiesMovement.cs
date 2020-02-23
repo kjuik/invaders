@@ -1,19 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Zenject;
 
-public class WaveMovement: MonoBehaviour
+public class EnemiesMovement: MonoBehaviour
 {
-    private const float ChangeDirTime = 5f;
-    private float _swapDirTimer = ChangeDirTime / 2f;
+    private const float ChangeDirTime = 5f; //TODO calculate
     
+    private float _swapDirTimer = ChangeDirTime / 2f;
     private float _horizontalSpeed;
     private float _verticalSpeed;
     private Vector3 _currentHorizontalDir = Vector3.right;
     
-    private GameStateMachine _gameStateMachine;
+    [Inject] private GameStateMachine _gameStateMachine;
 
-    public void Init(GameStateMachine gameStateMachine, float horizontalSpeed, float verticalSpeed)
+    private Vector3 _initialPosition;
+    
+    protected void Awake()
     {
-        _gameStateMachine = gameStateMachine;
+        _initialPosition = transform.position;
+    }
+
+    public void OnNewWave(float horizontalSpeed, float verticalSpeed)
+    {
+        transform.position = _initialPosition;
+        _currentHorizontalDir = Vector3.right;
+        
         _horizontalSpeed = horizontalSpeed;
         _verticalSpeed = verticalSpeed;
     }

@@ -204,6 +204,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &915698398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 915698400}
+  - component: {fileID: 915698399}
+  m_Layer: 0
+  m_Name: Enemies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &915698399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915698398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c24949e6fd480c938ebbbb1fcdef9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &915698400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915698398}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2106814993}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1030120001
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStateMachine: {fileID: 1030120002}
   mainCamera: {fileID: 519420031}
+  enemiesMovement: {fileID: 915698399}
 --- !u!114 &1202321217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,11 +406,26 @@ MonoBehaviour:
     height: 1
     horizontalSpeed: 1
     verticalSpeed: 0.05
+    maxLifetime: 300
     enemyTypes:
     - enemy: {fileID: 1144683479350431537, guid: 47863a84cf541ea4d8cd9c14ee6c4a38,
         type: 3}
       probability: 1
-      pooled: 1
+  - width: 4
+    height: 2
+    horizontalSpeed: 1
+    verticalSpeed: 0.05
+    maxLifetime: 300
+    enemyTypes:
+    - enemy: {fileID: 1144683479350431537, guid: 47863a84cf541ea4d8cd9c14ee6c4a38,
+        type: 3}
+      probability: 1
+    - enemy: {fileID: 3490187749763824822, guid: 6037cd41d4193c34fbcdcd2dfafb4943,
+        type: 3}
+      probability: 1
+    - enemy: {fileID: 8857637491324778400, guid: a423eabc77c67e942856835501a5bca4,
+        type: 3}
+      probability: 1
 --- !u!4 &2106814993
 Transform:
   m_ObjectHideFlags: 0
@@ -373,12 +433,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106814991}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 915698400}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6224629228905682543
 PrefabInstance:

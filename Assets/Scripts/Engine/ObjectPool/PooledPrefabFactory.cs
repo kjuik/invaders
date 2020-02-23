@@ -3,12 +3,6 @@ using Zenject;
 
 public class PooledPrefabFactory : IFactory<Object, PooledObject>
 {
-    readonly DiContainer _container;
-
-    public PooledPrefabFactory(DiContainer container)
-    {
-        _container = container;
-    }
-
+    [Inject] private DiContainer _container;
     public PooledObject Create(Object prefab) => _container.InstantiatePrefab(prefab).AddComponent<PooledObject>();
 }
