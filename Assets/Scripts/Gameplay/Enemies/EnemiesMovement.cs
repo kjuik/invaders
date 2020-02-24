@@ -1,34 +1,23 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class EnemiesMovement: MonoBehaviour
 {
-    private const float ChangeDirTime = 5f; //TODO calculate
+    [SerializeField] private float period;
+    [SerializeField] private float horizontalSpeed;
+    [SerializeField] private float verticalSpeed;
     
-    private float _swapDirTimer = ChangeDirTime / 2f;
-    private float _horizontalSpeed;
-    private float _verticalSpeed;
+    private float _swapDirTimer;
     private Vector3 _currentHorizontalDir = Vector3.right;
     
     [Inject] private GameStateMachine _gameStateMachine;
-
-    private Vector3 _initialPosition;
     
     protected void Awake()
     {
-        _initialPosition = transform.position;
+        _swapDirTimer = period / 2f;
+        _currentHorizontalDir = Vector3.right;
     }
 
-    public void OnNewWave(float horizontalSpeed, float verticalSpeed)
-    {
-        transform.position = _initialPosition;
-        _currentHorizontalDir = Vector3.right;
-        
-        _horizontalSpeed = horizontalSpeed;
-        _verticalSpeed = verticalSpeed;
-    }
-    
     protected void Update()
     {
         if (_gameStateMachine.CurrentState == GameState.InGame)
@@ -38,13 +27,13 @@ public class EnemiesMovement: MonoBehaviour
     private void UpdateMovement()
     {
         transform.Translate(
-            ((_currentHorizontalDir * _horizontalSpeed) + (Vector3.down * _verticalSpeed)) * Time.deltaTime);
+            ((_currentHorizontalDir * horizontalSpeed) + (Vector3.down * verticalSpeed)) * Time.deltaTime);
         
         _swapDirTimer += Time.deltaTime;
-        if (_swapDirTimer >= ChangeDirTime)
+        if (_swapDirTimer >= period)
         {
             _currentHorizontalDir = -_currentHorizontalDir;
-            _swapDirTimer -= ChangeDirTime;
+            _swapDirTimer -= period;
         }
     }
 }
